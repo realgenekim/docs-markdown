@@ -1,5 +1,11 @@
 # 📝 Docs Markdown
 
+# Gene notes
+
+- tsc *.ts
+- made changes to reduce section heading levels (section heading 1 is #, not ##)
+- added handling for images
+
 Convert a Google Docs file (API response) to Markdown
 
 [![Node CI](https://img.shields.io/github/workflow/status/AnandChowdhary/docs-markdown/Node%20CI?label=GitHub%20CI&logo=github)](https://github.com/AnandChowdhary/docs-markdown/actions)

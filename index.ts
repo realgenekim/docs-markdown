@@ -63,7 +63,7 @@ revisionId: ${file.revisionId}
 
             textRows.push(
               paragraph?.elements?.map((element) =>
-                styleElement(element, styleType)?.replace(/\s+/g, "").trim()
+                styleElement(element, styleType)?.replace(/\s+/g, " ").trim()
               )
             );
           });
@@ -71,6 +71,9 @@ revisionId: ${file.revisionId}
         text += `| ${textRows.join(" | ")} |\n`;
       });
     }
+
+    // if (item.inlineObjects?) {
+    // }
 
     /**
      * Paragraphs and lists
@@ -93,6 +96,9 @@ revisionId: ${file.revisionId}
       item.paragraph.elements.forEach((element) => {
         if (element.textRun && content(element) && content(element) !== "\n") {
           text += styleElement(element, styleType);
+        }
+        if (element.inlineObjectElement && inlineElement(element)) {
+          text += inlineElement(element);
         }
       });
       text += bullet?.listId
@@ -133,17 +139,17 @@ const styleElement = (
   } else if (styleType === "SUBTITLE") {
     return `_${(content(element) || "").trim()}_`;
   } else if (styleType === "HEADING_1") {
-    return `## ${content(element)}`;
+    return `# ${content(element)}`;
   } else if (styleType === "HEADING_2") {
-    return `### ${content(element)}`;
+    return `## ${content(element)}`;
   } else if (styleType === "HEADING_3") {
-    return `#### ${content(element)}`;
+    return `### ${content(element)}`;
   } else if (styleType === "HEADING_4") {
-    return `##### ${content(element)}`;
+    return `#### ${content(element)}`;
   } else if (styleType === "HEADING_5") {
-    return `###### ${content(element)}`;
+    return `##### ${content(element)}`;
   } else if (styleType === "HEADING_6") {
-    return `####### ${content(element)}`;
+    return `###### ${content(element)}`;
   } else if (
     element.textRun?.textStyle?.bold &&
     element.textRun?.textStyle?.italic
@@ -164,6 +170,18 @@ const content = (
   const textRun = element?.textRun;
   const text = textRun?.content;
   if (textRun?.textStyle?.link?.url)
-    return `[${text}]${textRun.textStyle.link.url}`;
+    return `[${text}](${textRun.textStyle.link.url})`;
   return text || undefined;
+};
+
+const inlineElement = (
+  element: docs_v1.Schema$ParagraphElement
+): string | undefined => {
+  const inlineObjectElement = element?.inlineObjectElement;
+  const inlineObjectElementId = inlineObjectElement?.inlineObjectId;
+  return `\n\n![${inlineObjectElementId}](images/${inlineObjectElementId})\n\nImage: ${inlineObjectElementId}\n\n`
+  // const text = textRun?.content;
+  // if (textRun?.textStyle?.link?.url)
+  //   return `[${text}](${textRun.textStyle.link.url})`;
+  // return text || undefined;
 };
