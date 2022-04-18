@@ -157,6 +157,8 @@ const styleElement = (
     return `**_${content(element)}_**`;
   } else if (element.textRun?.textStyle?.italic) {
     return `_${content(element)}_`;
+  } else if (element.textRun?.textStyle?.strikethrough) {
+    return `~~${content(element)}~~`;
   } else if (element.textRun?.textStyle?.bold) {
     return `**${content(element)}**`;
   }
